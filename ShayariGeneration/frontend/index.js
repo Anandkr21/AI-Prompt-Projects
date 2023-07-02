@@ -1,18 +1,18 @@
 // JavaScript code to handle the API request and display the results
 function getShayari() {
     const keyword = document.getElementById('keywordInput').value;
-    const baseURL = "http://localhost:5000/";
+    const baseURL = "https://red-violet-bear-gown.cyclic.app/";
     const generateButton = document.getElementById('generateButton');
     const loader = document.getElementById('loader');
+
     // Show the loader
     loader.style.display = 'inline-block';
+
     // Disable the generate button while the fetch request is in progress
     generateButton.disabled = true;
 
     // Make an API request to the backend to get the shayari
     // You can use Fetch or Axios to make the HTTP request
-
-    // Example using Fetch:
     fetch(`${baseURL}/shayari?keyword=${keyword}`)
         .then(response => response.json())
         .then(data => {
@@ -31,7 +31,7 @@ function getShayari() {
             generateButton.disabled = false;
         })
         .catch(error => console.error(error));
-}
+    }
 
 // Function to handle the Enter key press event
 function handleKeyUp(event) {
@@ -42,6 +42,7 @@ function handleKeyUp(event) {
         document.getElementById('generateButton').click();
     }
 }
+
 // Function to copy the shayari text
 function copyShayari() {
     const shayariText = document.getElementById('shayariResult').innerText;

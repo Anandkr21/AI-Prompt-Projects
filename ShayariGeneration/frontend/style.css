@@ -1,14 +1,18 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(145deg, #ff6a00, #b1ee09, #5f94b7);
+    background: linear-gradient(145deg, #ff6a00, #b1ee09, #5f94b7, #ff0138, #f9e500);
+    /* background-color: teal; */
+    height: 430px;
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
 .container {
+    width: 100%;
+    height: 100%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 100px auto;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
@@ -61,13 +65,15 @@ h1 {
 }
 
 .input-container input {
-    width: 100%;
+    width: 96%;
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
     border: none;
     outline: none;
 }
+
+
 
 .input-container button {
     padding: 10px 20px;
@@ -76,8 +82,10 @@ h1 {
     border: none;
     background-color: #333;
     color: #fff;
+    margin-top: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
+
 }
 
 .input-container button:hover {
@@ -86,9 +94,20 @@ h1 {
 
 .shayari-container {
     background-color: rgba(255, 255, 255, 0.9);
+    height: 150px;
     padding: 20px;
     border-radius: 5px;
     animation: slide-up 1s ease-in-out;
+}
+
+#copyButton {
+    float: right;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: #ede3d2;
+    border: none;
+    cursor: pointer;
 }
 
 .shayari {
@@ -117,4 +136,8 @@ h1 {
     100% {
         transform: rotate(360deg);
     }
+}
+
+p {
+    margin-left: 30%;
 }
