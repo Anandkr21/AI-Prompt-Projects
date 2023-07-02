@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:5000'
+const baseURL = 'https://aggressive-tunic-boa.cyclic.app/'
 
 
 var language = document.getElementById("lang").value;
