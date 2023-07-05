@@ -1,0 +1,48 @@
+function calculateCodingStreaks(logFile) {
+    let longest = 0;
+    let longest_all = 0;
+    let cur_streak_day = 0;
+    let curr_Of_AllDays = 0;
+  
+    for (let i = 0; i < logFile.length; i++) {
+      const line = logFile[i];
+  
+      for (let j = 0; j < line.length; j++) {
+        const action = line[j];
+  
+        if (action === "C") {
+          cur_streak_day++;
+          curr_Of_AllDays++;
+        } else {
+          if (cur_streak_day > longest) {
+            longest = cur_streak_day;
+          }
+          if (curr_Of_AllDays > longest_all) {
+            longest_all = curr_Of_AllDays;
+          }
+  
+          cur_streak_day = 0;
+        }
+      }
+  
+      if (cur_streak_day > longest) {
+        longest = cur_streak_day;
+      }
+  
+      cur_streak_day = 0;
+    }
+  
+    return { longest, longest_all };
+  }
+  
+  // Example usage:
+  const logFile = [
+    "CCCSECCCCC", // Day 1
+    "CSSCSSSCSC", // Day 2
+    "CCCCCCCCCC" // Day 3
+  ];
+  
+  const { longest, longest_all } = calculateCodingStreaks(logFile);
+  console.log("Longest coding streak of the day (X):", longest);
+  console.log("Longest coding streak of N days (Y):", longest_all);
+  
