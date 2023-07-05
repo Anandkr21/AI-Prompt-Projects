@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Restaurant Management</title>
+    <link rel="stylesheet" href="../static/style.css">
+     
+  </head>
+  <body>
+    <div class="container">
+      <h1>Restaurant Management</h1>
+
+      <h2>Inventory</h2>
+      <div id="inventory"></div>
+
+       
+      <div id="addDishModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <form id="addDishForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required /><br />
+            <label for="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              step="0.01"
+              required
+            /><br />
+            <label for="availability">Availability:</label>
+            <select id="availability" name="availability" required>
+              <option value="yes">Yes</option>
+              <option value="no">No</option></select
+            ><br />
+            <button type="submit">Add Dish</button>
+          </form>
+        </div>
+      </div>
+       
+      <div id="crud">
+        <div>
+          <h2>Add Dish</h2>
+          <button id="addDishButton">Add Dish</button>
+        </div>
+        <div>
+          <h2>Place Order</h2>
+           <button id="placeOrderButton">Place Order</button>
+        </div>
+        <div>
+          <h2>Update Order Status</h2>
+          <button id="updateStatusButton">Update Status</button>
+        </div>
+      </div>
+       
+      <div id="placeOrderModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <form id="placeOrderForm">
+            <label for="dishId">Dish ID:</label>
+            <input type="number" id="dishId" name="dishId" required /><br />
+            <label for="customerName">Customer Name:</label>
+            <input
+              type="text"
+              id="customerName"
+              name="customerName"
+              required
+            /><br />
+            <button type="submit">Place Order</button>
+          </form>
+        </div>
+      </div>
+
+       
+      <div id="updateStatusModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <form id="updateOrderForm">
+            <label for="orderId">Order ID:</label>
+            <input type="number" id="orderId" name="orderId" required /><br />
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+              <option value="received">Received</option>
+              <option value="preparing">Preparing</option>
+              <option value="delivered">Delivered</option>
+              <option value="canceled">Canceled</option></select
+            ><br />
+            <button type="submit">Update Status</button>
+          </form>
+        </div>
+      </div>
+
+      <h2>Orders List</h2>
+      <div id="orders"></div>
+    </div>
+
+    <script>
+      // Open the corresponding modal when the button is clicked
+      document
+        .getElementById("addDishButton")
+        .addEventListener("click", function () {
+          document.getElementById("addDishModal").style.display = "block";
+        });
+
+      document
+        .getElementById("placeOrderButton")
+        .addEventListener("click", function () {
+          document.getElementById("placeOrderModal").style.display = "block";
+        });
+
+      document
+        .getElementById("updateStatusButton")
+        .addEventListener("click", function () {
+          document.getElementById("updateStatusModal").style.display = "block";
+        });
+
+      // Close the modal when the close button or outside the modal is clicked
+      var closeButtons = document.getElementsByClassName("close");
+      for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].addEventListener("click", function () {
+          var modal = this.parentElement.parentElement;
+          modal.style.display = "none";
+        });
+      }
+
+      window.addEventListener("click", function (event) {
+        var modals = document.getElementsByClassName("modal");
+        for (var i = 0; i < modals.length; i++) {
+          if (event.target == modals[i]) {
+            modals[i].style.display = "none";
+          }
+        }
+      });
+
+      // Handle form submissions
+      document
+        .getElementById("addDishForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          // Perform specific function for adding a dish
+          // You can add your own logic here
+          AddNewData();
+          console.log("Add Dish form submitted");
+        });
+
+      document
+        .getElementById("placeOrderForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          // Perform specific function for placing an order
+          // You can add your own logic here
+          console.log("Place Order form submitted");
+        });
+
+      document
+        .getElementById("updateOrderForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          // Perform specific function for updating the order status
+          // You can add your own logic here
+          console.log("Update Order Status form submitted");
+        });
+
+      // Fetch and display the inventory
+      function fetchInventory() {
+        fetch("/data")
+          .then((response) => response.json())
+          .then((data) => {
+            var inventory = "";
+            data[0].forEach((dish) => {
+              inventory +=
+                '<div class="listofdishes"><strong>' +
+                dish.name +
+                "</strong> - $" +
+                dish.price +
+                " - Availability: " +
+                dish.availability +
+                " - id: " +
+                dish.id +
+                " ";
+              inventory +=
+                '<button onclick="deleteDish(' + dish.id + ')">Delete</button>';
+              inventory +=
+                '<button onclick="updateAvailability(' +
+                dish.id +
+                ", '" +
+                dish.availability +
+                "')\">Update</button>";
+              inventory += "</div>";
+            });
+            document.getElementById("inventory").innerHTML = inventory;
+          });
+      }
+
+      // Fetch and display the orders
+      function fetchOrders() {
+        fetch("/orders")
+          .then((response) => response.json())
+          .then((data) => {
+            var orders = "";
+            data.forEach((order) => {
+              orders +=
+                "<div><strong>Order ID:</strong> " +
+                order.id +
+                " - <strong>Customer Name:</strong> " +
+                order.customer_name +
+                " - <strong>Dish:</strong> " +
+                order.name +
+                " - <strong>Price:</strong> $" +
+                order.price +
+                " - <strong>Status:</strong> " +
+                order.status +
+                "</div> ";
+            });
+            document.getElementById("orders").innerHTML = orders;
+          });
+      }
+
+      // Add dish
+      function AddNewData() {
+        var name = document.getElementById("name").value;
+        var price = document.getElementById("price").value;
+        var availability = document.getElementById("availability").value;
+        fetch("/postdish", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            price: price,
+            availability: availability,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              fetchInventory();
+              alert("Dish added to inventory.");
+            } else {
+              alert("Error adding dish.");
+            }
+          })
+          .catch((error) => {
+            alert("Error adding dish.");
+          });
+      }
+      // Place order
+      document
+        .getElementById("placeOrderForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          var dishId = document.getElementById("dishId").value;
+          var customerName = document.getElementById("customerName").value;
+          fetch("/sold/" + dishId, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name: customerName }),
+          })
+            .then((response) => response.text())
+            .then((data) => {
+              if (data === "order received!") {
+                fetchOrders();
+                alert("Order placed successfully.");
+              } else {
+                alert(data);
+              }
+            })
+            .catch((error) => {
+              alert("Error placing order.");
+            });
+        });
+
+      // Update order status
+      document
+        .getElementById("updateOrderForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          var orderId = document.getElementById("orderId").value;
+          var status = document.getElementById("status").value;
+          fetch("/updateorders/" + orderId, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: status }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data === "order status updated.") {
+                fetchOrders();
+                alert("Order status updated successfully.");
+              } else {
+                alert(data);
+              }
+            })
+            .catch((error) => {
+              alert("Error updating order status.");
+            });
+        });
+
+      // Delete dish
+      function deleteDish(dishId) {
+        fetch("/delete/" + dishId, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              fetchInventory();
+              alert("Dish deleted successfully.");
+            } else {
+              alert("Error deleting dish.");
+            }
+          })
+          .catch((error) => {
+            alert("Error deleting dish.");
+          });
+      }
+
+      // Update dish availability
+      function updateAvailability(dishId, availability) {
+        var newAvailability = availability === "yes" ? "no" : "yes";
+        fetch("/update/" + dishId, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ availability: newAvailability }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              fetchInventory();
+              alert("Dish availability updated successfully.");
+            } else {
+              alert("Error updating dish availability.");
+            }
+          })
+          .catch((error) => {
+            alert("Error updating dish availability.");
+          });
+      }
+
+      // Initial fetch of inventory and orders
+      fetchInventory();
+      fetchOrders();
+    </script>
+  </body>
+</html>

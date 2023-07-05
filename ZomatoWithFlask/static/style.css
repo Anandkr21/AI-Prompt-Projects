@@ -1,0 +1,141 @@
+ 
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 5px;
+        max-width: 400px;
+      }
+
+      .close {
+        color: #888;
+        float: right;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+      }
+ 
+      /* Adjustments for smaller screens */
+      @media screen and (max-width: 600px) {
+        .modal-content {
+          margin: 20% auto;
+          max-width: 80%;
+        }
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+      }
+
+      .container {
+        min-width: 90vw;
+        padding: 20px;
+        background-color: teal;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: white
+      }
+
+      h2 {
+        margin-top: 30px;
+        color: white
+      }
+
+      form {
+        margin-top: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        background-color: #4caf99;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a066;
+      }
+
+      #inventory {
+        margin-top: 20px;
+      }
+
+      #inventory > div {
+        margin-bottom: 5px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      #orders {
+        margin-top: 20px;
+      }
+
+      #orders > div {
+        margin-bottom: 5px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .listofdishes {
+        display: flex;
+        justify-content: space-between;
+      }
+      .listofdishes > strong {
+        padding-right: 5px;
+      }
+      #crud{
+        display: flex;
+        justify-content: space-between;
+      }
+  
