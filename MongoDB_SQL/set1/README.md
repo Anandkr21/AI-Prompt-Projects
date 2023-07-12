@@ -4,7 +4,7 @@
 
 In MongoDB, we're using a **`Customers`** collection. Each document in the collection represents one customer. Here is the schema of the **`Customers`** collection:
 
-```
+```bash
 {
   "_id": ObjectId(), // a unique identifier created by MongoDB itself
   "name": String,
@@ -28,7 +28,7 @@ In MongoDB, we're using a **`Customers`** collection. Each document in the colle
 
 In SQL, we're using a **`Customers`** table. Each row in the table represents one customer. Here is the schema of the **`Customers`** table:
 
-```
+```bash
 CREATE TABLE Customers (
     id INT PRIMARY KEY,
     name VARCHAR(100),
@@ -54,7 +54,7 @@ CREATE TABLE Customers (
 - **Prerequisite**: Understand creating tables in SQL / collections in MongoDB
 - **Problem**: Create a **`Customers`** table / collection with the following fields: **`id`** (unique identifier), **`name`**, **`email`**, **`address`**, and **`phone_number`**.
 
-```bash
+```sql
 CREATE TABLE customers (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
@@ -65,6 +65,19 @@ CREATE TABLE customers (
 );
 ```
 
+```bash
+db.createCollection('customers', {
+  fields: {
+    id: { type: 'int', unique: true },
+    name: { type: 'string' },
+    email: { type: 'string' },
+    address: { type: 'string' },
+    phone_number: { type: 'string', nullable: true }
+  }
+})
+
+```
+
 
 
 **Problem 2:**
@@ -72,7 +85,7 @@ CREATE TABLE customers (
 - **Prerequisite**: Understand inserting data into SQL tables / MongoDB collections
 - **Problem**: Insert five rows / documents into the **`Customers`** table / collection with data of your choice.
 
-```bash
+```sql
 INSERT INTO customers (name, email, address, phone_number)
 VALUES
   ('John Doe', 'john.doe@example.com', '123 Main Street, Anytown, CA 12345', '123-456-7890'),
@@ -80,7 +93,41 @@ VALUES
   ('Mary Smith', 'mary.smith@example.com', '789 Oak Street, Anytown, CA 12345', '789-012-3456'),
   ('Peter Jones', 'peter.jones@example.com', '101 First Avenue, Anytown, CA 12345', '101-202-3030'),
   ('Susan Brown', 'susan.brown@example.com', '202 Second Avenue, Anytown, CA 12345', '202-303-4040');
+```
 
+```bash
+db.customers.insertMany([
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "address": "123 Main Street, Anytown, CA 12345",
+    "phone_number": "123-456-7890"
+  },
+  {
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "address": "456 Elm Street, Anytown, CA 12345",
+    "phone_number": "456-789-0123"
+  },
+  {
+    "name": "Mary Smith",
+    "email": "mary.smith@example.com",
+    "address": "789 Oak Street, Anytown, CA 12345",
+    "phone_number": "789-012-3456"
+  },
+  {
+    "name": "Peter Jones",
+    "email": "peter.jones@example.com",
+    "address": "101 First Avenue, Anytown, CA 12345",
+    "phone_number": "101-202-3030"
+  },
+  {
+    "name": "Susan Brown",
+    "email": "susan.brown@example.com",
+    "address": "202 Second Avenue, Anytown, CA 12345",
+    "phone_number": null
+  }
+])
 ```
 
 
@@ -89,9 +136,13 @@ VALUES
 - **Prerequisite**: Understand basic data fetching in SQL / MongoDB
 - **Problem**: Write a query to fetch all data from the **`Customers`** table / collection.
 
-```bash
+```sql
 SELECT *
 FROM customers;
+```
+
+```bash
+db.customers.find()
 ```
 
 **Problem 4:**
@@ -99,9 +150,13 @@ FROM customers;
 - **Prerequisite**: Understand how to select specific fields in SQL / MongoDB
 - **Problem**: Write a query to select only the **`name`** and **`email`** fields for all customers.
 
-```bash
+```sql
 SELECT name, email
 FROM customers;
+```
+
+```bash
+db.customers.find({}, { name: 1, email: 1 })
 ```
 
 **Problem 5:**
@@ -109,10 +164,14 @@ FROM customers;
 - **Prerequisite**: Understand basic WHERE clause in SQL / MongoDB's find method
 - **Problem**: Write a query to fetch the customer with the **`id`** of 3.
 
-```bash
+```sql
 SELECT *
 FROM customers
 WHERE id = 3;
+```
+
+```bash
+db.customers.find({ _id: 3 })
 ```
 
 **Problem 6:**
@@ -120,10 +179,14 @@ WHERE id = 3;
 - **Prerequisite**: Understand using string patterns in SQL (LIKE clause) / using regex in MongoDB
 - **Problem**: Write a query to fetch all customers whose **`name`** starts with 'A'.
 
-```bash
+```sql
 SELECT *
 FROM customers
 WHERE name LIKE 'A%';
+```
+
+```bash
+db.customers.find({ name: { $regex: /^A/ } })
 ```
 
 **Problem 7:**
@@ -135,7 +198,10 @@ WHERE name LIKE 'A%';
 SELECT *
 FROM customers
 ORDER BY name DESC;
+```
 
+```bash
+db.customers.find().sort({ name: -1 })
 ```
 
 **Problem 8:**
@@ -143,11 +209,14 @@ ORDER BY name DESC;
 - **Prerequisite**: Understand data updating in SQL / MongoDB
 - **Problem**: Write a query to update the **`address`** of the customer with **`id`** 4.
   
-```bash
+```sql
     UPDATE customers
     SET address = '12345 Main Street, Anytown, CA 12345'
     WHERE id = 4;
+```
 
+```bash
+db.customers.updateOne({ _id: 4 }, { $set: { address: "101 Main Street, Anytown, CA 91234" } })
 ```
 
 **Problem 9:**
@@ -155,11 +224,15 @@ ORDER BY name DESC;
 - **Prerequisite**: Understand how to limit results in SQL / MongoDB
 - **Problem**: Write a query to fetch the top 3 customers when ordered by **`id`** in ascending order.
 
-```bash
+```sql
 SELECT *
 FROM customers
 ORDER BY id
 LIMIT 3;
+```
+
+```bash
+db.customers.find().sort({ _id: 1 }).limit(3)
 ```
 
 **Problem 10:**
@@ -167,18 +240,26 @@ LIMIT 3;
 - **Prerequisite**: Understand data deletion in SQL / MongoDB
 - **Problem**: Write a query to delete the customer with **`id`** 2.
   
-```bash
+```sql
 DELETE FROM customers
 WHERE id = 2;
+```
+
+```bash
+db.customers.deleteOne({ _id: 2 })
 ```
 
 **Problem 11:**
 
 - **Prerequisite**: Understand how to count rows / documents in SQL / MongoDB
 - **Problem**: Write a query to count the number of customers.
-```bash
+```sql
 SELECT COUNT(*) AS total_customers
 FROM customers;
+```
+
+```bash
+db.customers.count()
 ```
 
 **Problem 12:**
@@ -186,11 +267,15 @@ FROM customers;
 - **Prerequisite**: Understand how to skip rows / documents in SQL / MongoDB
 - **Problem**: Write a query to fetch all customers except the first two when ordered by **`id`** in ascending order.
 - 
-```bash
+```sql
 SELECT *
 FROM customers
 ORDER BY id
 OFFSET 2;
+```
+
+```bash
+db.customers.find().sort({ _id: 1 }).skip(2)
 ```
 
 **Problem 13:**
@@ -198,11 +283,18 @@ OFFSET 2;
 - **Prerequisite**: Understand filtering with multiple conditions in SQL / MongoDB
 - **Problem**: Write a query to fetch all customers whose **`id`** is greater than 2 and **`name`** starts with 'B'.
 
-```bash
+```sql
 SELECT *
 FROM customers
 WHERE id > 2
 AND name LIKE 'B%';
+```
+
+```bash
+db.customers.find({
+  _id: { $gt: 2 },
+  name: { $regex: /^B/ }
+})
 ```
 
 
@@ -212,12 +304,23 @@ AND name LIKE 'B%';
 - **Prerequisite**: Understand how to use OR conditions in SQL / MongoDB
 - **Problem**: Write a query to fetch all customers whose **`id`** is less than 3 or **`name`** ends with 's'.
 
-```bash
+```sql
 SELECT *
 FROM customers
 WHERE id < 3
 OR name LIKE '%s';
 ```
+
+```bash
+db.customers.find({
+  $or: [
+    { _id: { $lt: 3 } },
+    { name: { $regex: /s$/ } }
+  ]
+})
+
+```
+
 **Problem 15:**
 
 - **Prerequisite**: Understand how to use NULL checks in SQL / MongoDB
@@ -230,7 +333,7 @@ WHERE phone_number IS NULL
 OR phone_number = '';
 ```
 
-```mongodb
+```bash
 db.customers.find({
   phone_number: {
     $in: [null, '' ]
