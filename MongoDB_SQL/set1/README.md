@@ -28,7 +28,7 @@ In MongoDB, we're using a **`Customers`** collection. Each document in the colle
 
 In SQL, we're using a **`Customers`** table. Each row in the table represents one customer. Here is the schema of the **`Customers`** table:
 
-```bash
+```sql
 CREATE TABLE Customers (
     id INT PRIMARY KEY,
     name VARCHAR(100),
@@ -65,7 +65,7 @@ CREATE TABLE customers (
 );
 ```
 
-```bash
+```js
 db.createCollection('customers', {
   fields: {
     id: { type: 'int', unique: true },
